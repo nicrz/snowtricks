@@ -1,6 +1,6 @@
 <?php
 
-namespace App\TrickFixtures;
+namespace App\DataFixtures;
 
 use App\Entity\Trick;
 use Doctrine\Bundle\FixturesBundle\Fixture;
