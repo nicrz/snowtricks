@@ -25,6 +25,13 @@ class Trick
     /**
      * @var string
      *
+     * @ORM\Column(name="main_image", type="string", length=100, nullable=false)
+     */
+    private $main_image;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="name", type="string", length=100, nullable=false)
      */
     private $name;
@@ -39,6 +46,18 @@ class Trick
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getMainimage(): ?string
+    {
+        return $this->main_image;
+    }
+
+    public function setMainimage(string $main_image): self
+    {
+        $this->main_image = $main_image;
+
+        return $this;
     }
 
     public function getName(): ?string

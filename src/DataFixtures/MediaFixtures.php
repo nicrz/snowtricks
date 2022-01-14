@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MediaFixtures;
+namespace App\DataFixtures;
 
 use App\Entity\Media;
 use Doctrine\Bundle\FixturesBundle\Fixture;

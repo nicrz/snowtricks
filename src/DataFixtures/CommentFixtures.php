@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CommentFixtures;
+namespace App\DataFixtures;
 
 use App\Entity\Comment;
 use DateTime;

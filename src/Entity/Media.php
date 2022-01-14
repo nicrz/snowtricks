@@ -25,13 +25,6 @@ class Media
     /**
      * @var integer
      *
-     * @ORM\Column(name="ismain", type="integer", nullable=false)
-     */
-    private $ismain;
-
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="type", type="integer", nullable=false)
      */
     private $type;
@@ -63,18 +56,6 @@ class Media
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIsmain(): ?int
-    {
-        return $this->ismain;
-    }
-
-    public function setIsmain(int $ismain): self
-    {
-        $this->ismain = $ismain;
-
-        return $this;
     }
 
     public function getType(): ?int
