@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}{% block title %}SnowTricks - Accueil{% endblock %}{% block body %}{% include 'header.html.twig' %}
+<div class="main">
+	<div class="shop_top">
+		<div class="container">
+			<center>
+				<img src="{{ asset('images/tricks/grabs1.jpg') }}" class="img-responsive" style="width: 100%; z-index: 0;" alt=""/>
+			</center>
+			<br />
+			<center>
+				<h1>{{ trick.name }}</h1>
+			</center>
+			<div class="row d-none d-lg-flex load-media">
+				<div class="col-lg-6 col-md-12">
+					<div id="carousel" class="carousel slide mt-3 mb-2" data-ride="carousel">
+						<ol class="carousel-indicators">
+							{% for key, picture in pictures %}
+							<li data-target=".carousel" data-slide-to="{{ key }}"  {% if key == 0 %}class="active"{% endif %} ></li>
+							{% endfor %}
+						</ol>
+						<div class="carousel-inner enlarge">
+							{% for key, picture in pictures %}
+							<div class="carousel-item  {% if key == 0 %}active{% endif %} ">
+								<img class="d-block" src="{{ asset('images/tricks/'~ picture.name ~'') }}" width="497" height="356">
+							</div>
+							{% endfor %}
+						</div>
+						<a class="carousel-control-prev" href="#carousel" data-slide="prev"><span class="carousel-control-prev-icon"></span></a>
+						<a class="carousel-control-next" href="#carousel" data-slide="next"><span class="carousel-control-next-icon"></span></a>
+					</div>
+					{{ form_start(formPictures) }}   
+					<div class="input-file-container">
+						{{ form_widget(formPictures.name, {'attr': {'class': 'input-file'}}) }}
+						<label tabindex="0" for="my-file" class="input-file-trigger">Ajouter des images </label>
+						<p></p>
+						{{ form_widget(formPictures.idtrick, {'attr': {'value': app.request.get('trickid')}}) }}
+						<button type="submit" class="mdc-button mdc-button--outlined shaped-button outlined-button--light mdc-ripple-upgraded" style="--mdc-ripple-fg-size:41px; --mdc-ripple-fg-scale:2.15869; --mdc-ripple-fg-translate-start:7.5625px, -2.5px; --mdc-ripple-fg-translate-end:14.3828px, -2.5px;">Envoyer</button>
+					</div>
+					{{ form_end(formPictures) }}
+				</div>
+				<div class="col-lg-6 col-md-12">
+					<div id="carousel-v" class="carousel slide mt-3 mb-2" data-ride="carousel">
+						<ol class="carousel-indicators">
+							{% for key, video in videos %}
+							<li data-target="#carousel-v" data-slide-to="{{ key }}"  {% if key == 0 %}class="active"{% endif %} ></li>
+							{% endfor %}
+						</ol>
+						<div class="carousel-inner">
+							{% for key, video in videos %}
+							<div class="carousel-item  {% if key == 0 %}active{% endif %} ">
+								{{ video.code|raw }}
+							</div>
+							{% endfor %}
+						</div>
+						<a class="carousel-control-prev" href="#carousel-v" data-slide="prev"><span class="carousel-control-prev-icon"></span></a>
+						<a class="carousel-control-next" href="#carousel-v" data-slide="next"><span class="carousel-control-next-icon"></span></a>
+					</div>
+					<h4 class="m_11">Ajouter une vidéo (code d'intégration)</h4>
+					{{ form_start(formVideos) }}
+                    {{ form_widget(formVideos.code, {'attr': {'style': 'height: 80px; width: 100%;' }}) }}
+                    {{ form_widget(formVideos.idtrick, {'attr': {'value': app.request.get('trickid') }}) }}
+                    <br />
+					<div class="form-submit">
+						<input name="submit" type="submit" id="submit" value="Envoyer">
+						<br>
+					</div>
+					{{ form_end(formVideos) }}
+				</div>
+			</div>
+			<div class="text-center">
+				<a href="#" id="loadMedia" class="d-md-block d-lg-none"><button class="btn btn-outline-secondary">Afficher les médias</button></a>
+				<a href="#" id="hideMedia" class="d-none d-md-none d-lg-none"><button class="btn btn-outline-secondary mt-3">Masquer les médias</button></a>
+			</div>
+			<div class="desc">
+				<br />
+				<center>
+					<h3>Description</h3>
+				</center>
+				<p>
+					{{ trick.description }}
+				</p>
+			</div>
+			<h4 class="m_11">Commentaires sur cette figure</h4>
+			{{ form_start(formView) }}
+            {{ form_widget(formView.content, {'attr': {'value': 'Poster un commentaire', 'style': 'width: 100%; height: 80px;' }}) }}
+            {{ form_widget(formView.idtrick, {'attr': {'value': app.request.get('trickid') }}) }}
+            
+			<div class="form-submit">
+				<input name="submit" type="submit" id="submit" value="Envoyer">
+				<br>
+			</div>
+			{{ form_end(formView) }}
+			<br />
+			<div class="row">
+				{% for comment in comments %}
+				<div class="col-md-4 product1">
+					<img src="images/s1.jpg" class="img-responsive" alt=""/>
+					<div class="shop_desc">
+						<a href="#"></a>
+						<h3>
+							<a href="#"></a>
+							<a href="#">Pb pour accéder à l'user</a>
+						</h3>
+						<p>
+							{{ comment.content }} 
+						</p>
+						<ul class="buttons">
+							<li class="cart"><a href="#">{{ comment.date |date('d-m-Y') }}</a></li>
+							<li class="shop_btn"><a href="#">Supprimer</a></li>
+							<div class="clear"></div>
+						</ul>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% include 'footer.html.twig' %}
+
+{% endblock %}

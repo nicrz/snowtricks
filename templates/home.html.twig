@@ -51,17 +51,14 @@
 			<div class="close_but"><i class="close1"> </i></div>
 			  <div class="row">
         {% for trick in tricks %}
-				<div class="col-md-3 top_box" style="margin-bottom: 20px;">
-					<div class="view view-ninth"><a href="single.html">
-                    <img src="{{ asset('images/tricks/test.jpg') }}" class="img-responsive" alt=""/>
-                    <div class="mask mask-1"> </div>
-                    <div class="mask mask-2"> </div>
-                      <div class="content">
-                        <h2>{{ trick.name }}</h2>
-                        <p>{{ trick.description|u.truncate(50) }}</p>
-                      </div>
-                    </a> </div>
 
+        <div class="col-md-4 team1">
+				<div class="img_section magnifier2">
+				  <a class="fancybox" href="{{ path('trick_details', {'trickid': trick.id}) }}" data-fancybox-group="gallery" title="Lorem ipsum dolor sit amet"><img src="{{ asset('images/tricks/grabs1.jpg') }}" class="img-responsive" width="361" height="268" style="margin-bottom: 10px;"><span> </span>
+					<div class="img_section_txt">
+						{{ trick.name }}
+					</div>
+				</a></div>
 				</div>
         {% endfor %}
 			</div>
