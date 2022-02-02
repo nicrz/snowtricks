@@ -1250,6 +1250,41 @@ p.m_8{
 	resize: none;
 	border:1px solid #DFE0E2;
 }
+
+.to input[type="password"] {
+	padding: 10px;
+	width:95%;
+	font-size: 0.85em;
+	font-family: 'Open Sans', sans-serif;
+	margin: 10px 0;
+	border: none;
+	color: #888;
+	background:#F8F8F8;
+	float: left;
+	outline: none;
+	border:1px solid #DFE0E2;
+}
+.to input[type="password"]:hover, .text input[type="password"], .text textarea:hover{
+	border-color:#E25050;
+}
+.text {
+	width:50%;
+	float:left;
+}
+.text input[type="password"], .text textarea {
+	width:100%;
+	font-size: 0.85em;
+	margin: 10px 0;
+	border: none;
+	color: #888;
+	font-family: 'Open Sans', sans-serif;
+	outline: none;
+	background:#F8F8F8;
+	height: 100px;
+	padding: 10px;
+	resize: none;
+	border:1px solid #DFE0E2;
+}
 .form-submit{
 	float:right;
 }

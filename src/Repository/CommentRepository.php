@@ -17,7 +17,7 @@ class CommentRepository extends ServiceEntityRepository
     {
 
         $qb = $this->createQueryBuilder('c')
-            ->where('c.idtrick = :id')    
+            ->where('c.trick = :id')    
             ->andWhere('c.valid = 1')     
             ->setParameter('id', $trickid);       
             
@@ -32,7 +32,7 @@ class CommentRepository extends ServiceEntityRepository
     {
 
         $qb = $this->createQueryBuilder('c')
-            ->where('c.idtrick = :id')    
+            ->where('c.trick = :id')    
             ->andWhere('c.valid = 0')     
             ->setParameter('id', $trickid);       
             

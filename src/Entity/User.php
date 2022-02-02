@@ -197,11 +197,13 @@ class User implements UserInterface
     }
 
     /**
+     * The public representation of the user (e.g. a username, an email address, etc.)
+     *
      * @see UserInterface
      */
-    public function getUserIdentifier()
+    public function getUserIdentifier(): string
     {
-        
+        return (string) $this->email;
     }
 
 }
