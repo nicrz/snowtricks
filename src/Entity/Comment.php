@@ -8,7 +8,7 @@ use App\Repository\CommentRepository;
 /**
  * Comment
  *
- * @ORM\Table(name="comment", indexes={@ORM\Index(name="idtrick", columns={"idtrick"}), @ORM\Index(name="iduser", columns={"iduser"})})
+ * @ORM\Table(name="comment", indexes={@ORM\Index(name="trick", columns={"trick"}), @ORM\Index(name="user", columns={"user"})})
  * @ORM\Entity(repositoryClass=CommentRepository::class)
  */
 class Comment
@@ -46,22 +46,22 @@ class Comment
     /**
      * @var \Trick
      *
-     * @ORM\ManyToOne(targetEntity="Trick")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Trick")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idtrick", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="trick", referencedColumnName="id")
      * })
      */
-    private $idtrick;
+    private $trick;
 
     /**
      * @var \User
      *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="iduser", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id")
      * })
      */
-    private $iduser;
+    private $user;
 
     public function getId(): ?int
     {

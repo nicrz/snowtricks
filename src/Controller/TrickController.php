@@ -66,11 +66,11 @@ class TrickController extends AbstractController
                 $content = $form->get('content')->getData();
                 $idtrick = $form->get('idtrick')->getData();
                 //$iduser = $form->get('iduser')->getData();
-                $trick = $doctrine->getRepository(Trick::class)->findOneBy(['id' => $idtrick]);
+                $trick = $doctrine->getRepository(Trick::class)->findOneBy(['id' => $trickid]);
                 //$user = $doctrine->getRepository(User::class)->find(1);
                 $user = $this->getUser();
-                var_dump($user);
-                die();
+                //var_dump($user);
+                //die();
                 $newComment->setContent($content);
                 $newComment->setDate(new \DateTime('@'.strtotime('now')));
                 $newComment->setValid(0);
@@ -81,7 +81,7 @@ class TrickController extends AbstractController
                 $manager->persist($newComment);
                 $manager->flush();
     
-                return $this->redirectToRoute('trick_details', ['trickid' => $idtrick, dump($idtrick),]);
+                return $this->redirectToRoute('trick_details', ['trickid' => $trickid]);
             }
 
             // PICTURES GALLERY FORM
