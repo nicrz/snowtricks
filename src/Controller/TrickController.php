@@ -13,6 +13,7 @@ use App\Repository\UserRepository;
 use App\Form\CommentType;
 use App\Form\MediaType;
 use App\Form\MediaVideoType;
+use App\Form\TrickType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -89,11 +90,11 @@ class TrickController extends AbstractController
             $newImage = new Media();
             $picturesform = $this->createForm(MediaType::class, $newImage);
     
-            $form->handleRequest($request);
-            if($form->isSubmitted() && $form->isValid()) {
+            $picturesform->handleRequest($request);
+            if($picturesform->isSubmitted() && $picturesform->isValid()) {
     
-                $images = $form->get('name')->getData();
-                $idtrick = $form->get('idtrick')->getData();
+                $images = $picturesform->get('name')->getData();
+                $idtrick = $picturesform->get('idtrick')->getData();
               
     
                 foreach ($images as $image){
@@ -134,21 +135,22 @@ class TrickController extends AbstractController
             $newVideo = new Media();
             $videosform = $this->createForm(MediaVideoType::class, $newVideo);
     
-            $form->handleRequest($request);
-            if($form->isSubmitted() && $form->isValid()) {
+            $videosform->handleRequest($request);
+            if($videosform->isSubmitted() && $videosform->isValid()) {
     
-                $code = $form->get('code')->getData();
-                $idtrick = $form->get('idtrick')->getData();   
+                $code = $videosform->get('code')->getData();
+                $idtrick = $videosform->get('idtrick')->getData();   
 
                 $trick = $doctrine->getRepository(Trick::class)->findOneBy(['id' => $idtrick]);
                     
-                $newImage->setTrick($trick);
-                $newImage->setType(2);
-                $newImage->setCode($code);
+                $newVideo->setTrick($trick);
+                $newVideo->setName('Video');
+                $newVideo->setType(2);
+                $newVideo->setCode($code);
     
     
                 $manager = $doctrine->getManager();
-                $manager->persist($newImage);
+                $manager->persist($newVideo);
                 $manager->flush();
     
                 return $this->redirectToRoute('trick_details', ['trickid' => $idtrick]);
@@ -163,11 +165,123 @@ class TrickController extends AbstractController
             "formView" => $form->createView(),
             "formPictures" => $picturesform->createView(),
             "formVideos" => $videosform->createView(),
-            dump($comments),
+            dump($trick),
         ]);
     }
 
+    /**
+     * @Route("/add_trick", name="trick_add", requirements={"id" = "\d+"})
+     */
+    public function addTrick(ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger)
+    {
 
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
+
+        $newTrick = new Trick();
+        $form = $this->createForm(TrickType::class, $newTrick);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+
+            $image = $form->get('main_image')->getData();
+
+            // this condition is needed because the 'brochure' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $image->move(
+                        'images/tricks',
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'imagename' property to store the PDF file name
+                // instead of its contents
+                $newTrick->setMain_image($newFilename);
+            }
+            $manager = $doctrine->getManager();
+            $manager->persist($newTrick);
+            $manager->flush();
+
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('trick_add.html.twig',[
+            "formView" => $form->createView(),
+        ]);
+
+    }
+
+    /**
+     * @Route("/trick/{id}/edit", name="trick_edit", requirements={"id" = "\d+"})
+     */
+    public function editTrick(ManagerRegistry $doctrine, Request $request, Trick $trick, SluggerInterface $slugger)
+    {
+
+        $form = $this->createForm(TrickType::class, $trick);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+
+            $image = $form->get('main_image')->getData();
+
+            // this condition is needed because the 'brochure' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $image->move(
+                        'images/tricks',
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'imagename' property to store the PDF file name
+                // instead of its contents
+                $trick->setMain_image($newFilename);
+            }
+            $manager = $doctrine->getManager();
+            $manager->flush();
+
+            return $this->redirectToRoute('trick_edit', ['id' => $trick->getId()]);
+        }
+
+        return $this->render('trick_edit.html.twig',[
+            "formView" => $form->createView(),
+        ]);
+
+    }
+
+    /**
+     * @Route("/trick/{id}/delete", name="trick_delete", requirements={"id" = "\d+"})
+     */
+    public function deleteTrick(ManagerRegistry $doctrine, $id, Trick $trick)
+    {
+
+        $manager = $doctrine->getManager();
+        $manager->remove($trick);
+        $manager->flush();
+
+        $this->addFlash("warning", "La figure a bien été supprimée");
+        return $this->redirectToRoute('trick_details', ['trickid' => $id]);
+    }
 
     /**
      * @Route("/trick/{trickid}/comment/{id}/delete", name="comment_delete", requirements={"id" = "\d+"})

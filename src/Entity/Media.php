@@ -96,12 +96,12 @@ class Media
 
     public function getTrick(): ?Trick
     {
-        return $this->trick;
+        return $this->idtrick;
     }
 
-    public function setTrick(?Trick $trick): self
+    public function setTrick(?Trick $idtrick): self
     {
-        $this->trick = $trick;
+        $this->idtrick = $idtrick;
 
         return $this;
     }

@@ -48,12 +48,12 @@ class Trick
         return $this->id;
     }
 
-    public function getMainimage(): ?string
+    public function getMain_image(): ?string
     {
         return $this->main_image;
     }
 
-    public function setMainimage(string $main_image): self
+    public function setMain_image(string $main_image): self
     {
         $this->main_image = $main_image;
 
