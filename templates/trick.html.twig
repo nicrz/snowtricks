@@ -3,11 +3,11 @@
 	<div class="shop_top">
 		<div class="container">
 			<center>
-				<img src="{{ asset('images/tricks/grabs1.jpg') }}" class="img-responsive" style="width: 100%; z-index: 0;" alt=""/>
+				<img src="{{ asset('images/tricks/'~ trick.main_image ~'') }}" class="img-responsive" style="width: 100%; z-index: 0;" alt=""/>
 			</center>
 			<br />
 			<center>
-				<h1>{{ trick.name }}</h1>
+				<h1>{{ trick.name }}</h1>{% if is_granted('ROLE_ADMIN') %}<a href="{{ path('trick_edit', {'id': app.request.get('trickid') }) }}"><img src="{{ asset('images/edit.png') }}"/></a> <a href="{{ path('trick_delete', {'id': app.request.get('trickid') }) }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette figure?')"><img src="{{ asset('images/delete.png') }}"/></a>{% endif %}
 			</center>
 			<div class="row d-none d-lg-flex load-media">
 				<div class="col-lg-6 col-md-12">
@@ -21,12 +21,14 @@
 							{% for key, picture in pictures %}
 							<div class="carousel-item  {% if key == 0 %}active{% endif %} ">
 								<img class="d-block" src="{{ asset('images/tricks/'~ picture.name ~'') }}" width="497" height="356">
+								{% if is_granted('ROLE_ADMIN') %}<br /><center><a href="{{ path('media_delete', {'trickid': app.request.get('trickid'), 'id': picture.id }) }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette image?')">Supprimer cette image</a></center>{% endif %}
 							</div>
 							{% endfor %}
 						</div>
 						<a class="carousel-control-prev" href="#carousel" data-slide="prev"><span class="carousel-control-prev-icon"></span></a>
 						<a class="carousel-control-next" href="#carousel" data-slide="next"><span class="carousel-control-next-icon"></span></a>
 					</div>
+					{% if is_granted('ROLE_ADMIN') %}
 					{{ form_start(formPictures) }}   
 					<div class="input-file-container">
 						{{ form_widget(formPictures.name, {'attr': {'class': 'input-file'}}) }}
@@ -36,6 +38,7 @@
 						<button type="submit" class="mdc-button mdc-button--outlined shaped-button outlined-button--light mdc-ripple-upgraded" style="--mdc-ripple-fg-size:41px; --mdc-ripple-fg-scale:2.15869; --mdc-ripple-fg-translate-start:7.5625px, -2.5px; --mdc-ripple-fg-translate-end:14.3828px, -2.5px;">Envoyer</button>
 					</div>
 					{{ form_end(formPictures) }}
+					{% endif %}
 				</div>
 				<div class="col-lg-6 col-md-12">
 					<div id="carousel-v" class="carousel slide mt-3 mb-2" data-ride="carousel">
@@ -48,12 +51,14 @@
 							{% for key, video in videos %}
 							<div class="carousel-item  {% if key == 0 %}active{% endif %} ">
 								{{ video.code|raw }}
+								{% if is_granted('ROLE_ADMIN') %}<br /><center><a href="{{ path('media_delete', {'trickid': app.request.get('trickid'), 'id': video.id }) }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette vidéo?')">Supprimer cette vidéo</a></center>{% endif %}
 							</div>
 							{% endfor %}
 						</div>
 						<a class="carousel-control-prev" href="#carousel-v" data-slide="prev"><span class="carousel-control-prev-icon"></span></a>
 						<a class="carousel-control-next" href="#carousel-v" data-slide="next"><span class="carousel-control-next-icon"></span></a>
 					</div>
+					{% if is_granted('ROLE_ADMIN') %}
 					<h4 class="m_11">Ajouter une vidéo (code d'intégration)</h4>
 					{{ form_start(formVideos) }}
                     {{ form_widget(formVideos.code, {'attr': {'style': 'height: 80px; width: 100%;' }}) }}
@@ -64,6 +69,7 @@
 						<br>
 					</div>
 					{{ form_end(formVideos) }}
+					{% endif %}
 				</div>
 			</div>
 			<div class="text-center">
@@ -80,6 +86,7 @@
 				</p>
 			</div>
 			<h4 class="m_11">Commentaires sur cette figure</h4>
+			{% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
 			{{ form_start(formView) }}
             {{ form_widget(formView.content, {'attr': {'value': 'Poster un commentaire', 'style': 'width: 100%; height: 80px;' }}) }}
             {{ form_widget(formView.idtrick, {'attr': {'value': app.request.get('trickid') }}) }}
@@ -89,8 +96,35 @@
 				<br>
 			</div>
 			{{ form_end(formView) }}
+			{% else %}
+			Veuillez <a href="{{ path('app_login') }}">vous connecter</a> pour poster un commentaire.
+			{% endif %}
 			<br />
 			<div class="row">
+			{% if is_granted('ROLE_ADMIN') %}
+				{% for pending in pendingcomments %}
+				<div class="col-md-4 product1">
+					<img src="images/s1.jpg" class="img-responsive" alt=""/>
+					<div class="shop_desc" style="background-color: orange;">
+						<a href="#"></a>
+						<h3>
+							<a href="#"></a>
+							<a href="#">{{ pending.user.lastname }} {{ pending.user.firstname }}</a>
+						</h3>
+						<p>
+							{{ pending.content }} 
+						</p>
+						<ul class="buttons">
+							<li class="cart"><a href="#">{{ pending.date |date('d-m-Y') }}</a></li>
+							<li class="shop_btn"><a href="{{ path('comment_validation', {'trickid': app.request.get('trickid'), 'id': pending.id }) }}" onclick="return confirm('Etes-vous sûr de vouloir valider ce commentaire?')">Valider </a></li>
+							<li class="shop_btn" style="margin-right: 0.5rem;"><a href="{{ path('comment_delete', {'trickid': app.request.get('trickid'), 'id': pending.id }) }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce commentaire?')"> Supprimer</a></li>
+							<div class="clear"></div>
+						</ul>
+					</div>
+				</div>
+				{% endfor %}
+			{% endif %}
+
 				{% for comment in comments %}
 				<div class="col-md-4 product1">
 					<img src="images/s1.jpg" class="img-responsive" alt=""/>
@@ -105,7 +139,7 @@
 						</p>
 						<ul class="buttons">
 							<li class="cart"><a href="#">{{ comment.date |date('d-m-Y') }}</a></li>
-							<li class="shop_btn"><a href="#">Supprimer</a></li>
+							{% if is_granted('ROLE_ADMIN') %}<li class="shop_btn"><a href="{{ path('comment_delete', {'trickid': app.request.get('trickid'), 'id': comment.id }) }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce commentaire?')">Supprimer</a></li>{% endif %}
 							<div class="clear"></div>
 						</ul>
 					</div>

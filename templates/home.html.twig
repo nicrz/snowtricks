@@ -20,7 +20,7 @@
                         <!-- Text title -->
                         <h1 class="title">Run Over<br>Everything</h1>
                         <!-- /Text title -->
-                        <div class="button"><a href="#">Voir les figures</a></div>
+                        <div class="button"><a href="#figures">Voir les figures</a></div>
                     </div>
                 </div>
                <!-- /Texts container -->
@@ -49,14 +49,15 @@
 		<div class="container">
 			<h3 class="m_3">Figures</h3>
 			<div class="close_but"><i class="close1"> </i></div>
+      {% if is_granted('ROLE_ADMIN') %}<center><a href="{{ path('trick_add') }}"><input name="submit" type="button" id="submit" value="Ajouter une nouvelle figure"></a></center><br />{% endif %}
 			  <div class="row">
         {% for trick in tricks %}
 
         <div class="col-md-4 team1">
 				<div class="img_section magnifier2">
-				  <a class="fancybox" href="{{ path('trick_details', {'trickid': trick.id}) }}" data-fancybox-group="gallery" title="Lorem ipsum dolor sit amet"><img src="{{ asset('images/tricks/grabs1.jpg') }}" class="img-responsive" width="361" height="268" style="margin-bottom: 10px;"><span> </span>
+				  <a class="fancybox" style="color: white;" href="{{ path('trick_details', {'trickid': trick.id}) }}" data-fancybox-group="gallery" title="Lorem ipsum dolor sit amet"><img src="{{ asset('images/tricks/'~ trick.main_image ~'') }}" class="img-responsive" width="361" height="268" style="margin-bottom: 10px;"><span> </span>
 					<div class="img_section_txt">
-						{{ trick.name }}
+						<strong>{{ trick.name }}</strong> {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('trick_edit', {'id': trick.id }) }}"><img src="{{ asset('images/edit.png') }}"/></a> <a href="{{ path('trick_delete', {'id': trick.id }) }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette figure?')"><img src="{{ asset('images/delete.png') }}"/></a>{% endif %}
 					</div>
 				</a></div>
 				</div>

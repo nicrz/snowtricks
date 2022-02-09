@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}{% block title %}SnowTricks - Modification d'une figure{% endblock %}{% block body %}{% include 'header.html.twig' %}
+<div class="main">
+	<div class="shop_top">
+		<div class="container">
+
+
+			<h4 class="m_11">Modification</h4>
+			{{ form_start(formView) }}
+            {{ form_widget(formView.main_image) }}
+            {{ form_widget(formView.name, {'attr': {'placeholder': 'Nom de la figure', 'style': 'width: 100%; height: 80px;' }}) }}
+            {{ form_widget(formView.description, {'attr': {'placeholder': 'Description de la figure', 'style': 'width: 100%; height: 80px;' }}) }}
+            
+			<div class="form-submit">
+				<input name="submit" type="submit" id="submit" value="Envoyer">
+				<br>
+			</div>
+			{{ form_end(formView) }}
+			<br />
+		</div>
+	</div>
+</div>
+
+{% include 'footer.html.twig' %}
+
+{% endblock %}
