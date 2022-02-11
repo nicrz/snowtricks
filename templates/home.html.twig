@@ -53,7 +53,7 @@
 			  <div class="row">
         {% for trick in tricks %}
 
-        <div class="col-md-4 team1">
+        <div class="col-md-4 trick">
 				<div class="img_section magnifier2">
 				  <a class="fancybox" style="color: white;" href="{{ path('trick_details', {'trickid': trick.id}) }}" data-fancybox-group="gallery" title="Lorem ipsum dolor sit amet"><img src="{{ asset('images/tricks/'~ trick.main_image ~'') }}" class="img-responsive" width="361" height="268" style="margin-bottom: 10px;"><span> </span>
 					<div class="img_section_txt">
@@ -63,8 +63,34 @@
 				</div>
         {% endfor %}
 			</div>
+      			<div class="row justify-content-center m-3">
+			<a href="#" id="loadMoreTrick"><img src="{{ asset('images/loadmore.png') }}"></a>
+      <a href="#" id="loadLessTrick">MOINS</a>
+			</div>
 		 </div>
 	    </div>
+
+<script>
+
+    $("div.trick").slice(6, $("div.trick").length).hide();
+    $("#loadMoreTrick").on('click', function (e) {
+        e.preventDefault();
+        $("div.trick:hidden").slice(0, 6).slideDown();
+        if ($("div.trick:hidden").length == 0) {
+            $("#loadMoreTrick").hide('slow');
+            $("#loadLessTrick").show('slow');
+        }
+    });
+    $("#loadLessTrick").on('click', function (e) {
+        e.preventDefault();
+        $("div.trick").slice(6, $("div.trick").length).hide();
+        $("#loadLessTrick").hide('slow');
+        $("#loadMoreTrick").show('slow');
+
+    });
+});
+
+</script>
 
 {% include 'footer.html.twig' %}
 

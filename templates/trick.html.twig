@@ -64,10 +64,8 @@
                     {{ form_widget(formVideos.code, {'attr': {'style': 'height: 80px; width: 100%;' }}) }}
                     {{ form_widget(formVideos.idtrick, {'attr': {'value': app.request.get('trickid') }}) }}
                     <br />
-					<div class="form-submit">
 						<input name="submit" type="submit" id="submit" value="Envoyer">
 						<br>
-					</div>
 					{{ form_end(formVideos) }}
 					{% endif %}
 				</div>
@@ -85,21 +83,24 @@
 					{{ trick.description }}
 				</p>
 			</div>
+			<div id="comment-form">
 			<h4 class="m_11">Commentaires sur cette figure</h4>
 			{% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
 			{{ form_start(formView) }}
             {{ form_widget(formView.content, {'attr': {'value': 'Poster un commentaire', 'style': 'width: 100%; height: 80px;' }}) }}
             {{ form_widget(formView.idtrick, {'attr': {'value': app.request.get('trickid') }}) }}
             
-			<div class="form-submit">
+			
 				<input name="submit" type="submit" id="submit" value="Envoyer">
-				<br>
-			</div>
+				
+			
 			{{ form_end(formView) }}
 			{% else %}
 			Veuillez <a href="{{ path('app_login') }}">vous connecter</a> pour poster un commentaire.
 			{% endif %}
 			<br />
+			</div>
+
 			<div class="row">
 			{% if is_granted('ROLE_ADMIN') %}
 				{% for pending in pendingcomments %}
@@ -126,7 +127,7 @@
 			{% endif %}
 
 				{% for comment in comments %}
-				<div class="col-md-4 product1">
+				<div class="col-md-4 trick">
 					<img src="images/s1.jpg" class="img-responsive" alt=""/>
 					<div class="shop_desc">
 						<a href="#"></a>
@@ -143,12 +144,56 @@
 							<div class="clear"></div>
 						</ul>
 					</div>
+					
 				</div>
 				{% endfor %}
+				
+			</div>
+			<div class="row justify-content-center m-3">
+			<a href="#" id="loadMoreTrick"><img src="{{ asset('images/loadmore.png') }}"></a>
 			</div>
 		</div>
 	</div>
 </div>
+
+<script>
+
+$(function () {
+    $("div.trick").slice(3, $("div.trick").length).hide();
+    $("#loadMoreTrick").on('click', function (e) {
+        e.preventDefault();
+        $("div.trick:hidden").slice(0, 3).slideDown();
+        if ($("div.trick:hidden").length == 0) {
+            $("#loadMoreTrick").hide('slow');
+            $("#loadLessTrick").show('slow');
+        }
+    });
+    $("#loadLessTrick").on('click', function (e) {
+        e.preventDefault();
+        $("div.trick").slice(3, $("div.trick").length).hide();
+        $("#loadLessTrick").hide('slow');
+        $("#loadMoreTrick").show('slow');
+
+    });
+});
+
+$(function () {
+    $("#loadMedia").on('click', function (e) {
+        e.preventDefault();
+        $("div.load-media").removeClass('d-none');
+        $("#loadMedia").addClass('d-none');
+        $("#hideMedia").removeClass('d-none');
+    });
+    $("#hideMedia").on('click', function (e) {
+        e.preventDefault();
+        $("div.load-media").addClass('d-none');
+        $("#loadMedia").removeClass('d-none');
+        $("#hideMedia").addClass('d-none');
+    });
+
+});
+
+</script>
 
 {% include 'footer.html.twig' %}
 
