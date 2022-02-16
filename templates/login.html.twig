@@ -11,7 +11,13 @@
         <p><b><font color="red">Identifiants incorrects </font></b></p>
     {% endif %}
 
-					<div class="to">
+		{% for message in app.flashes('register-success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+					<div class="to" style="width: 50%;">
                         
                      	<input type="text" class="text" value="{{ last_username }}" name="email" id="inputEmail" placeholder="Email" required>
 					 	<input type="password" class="password" name="password" id="inputPassword" placeholder="Mot de passe" required>

@@ -4,12 +4,15 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrickRepository;
+use App\Entity\Category;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Figure
  *
  * @ORM\Table(name="trick")
  * @ORM\Entity(repositoryClass=TrickRepository::class)
+ * @UniqueEntity(fields={"name"}, message="Il existe déjà une figure avec cette appelation")
  */
 class Trick
 {
@@ -42,6 +45,16 @@ class Trick
      * @ORM\Column(name="description", type="string", length=10000, nullable=false)
      */
     private $description;
+
+    /**
+     * @var \Category
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="category", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    private $category;
 
     public function getId(): ?int
     {
@@ -80,6 +93,18 @@ class Trick
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

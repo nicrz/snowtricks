@@ -7,10 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(fields={"email"}, message="Il existe déjà un compte avec cet e-mail")
+ * @UniqueEntity(fields={"nickname"}, message="Il existe déjà un compte avec ce pseudo")
  */
 class User implements UserInterface
 {
@@ -20,6 +22,13 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="profile_picture", type="string", length=100, nullable=true)
+     */
+    private $profile_picture;
 
     /**
      * @var string
@@ -61,6 +70,18 @@ class User implements UserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getProfile_picture(): ?string
+    {
+        return $this->profile_picture;
+    }
+
+    public function setProfile_picture(string $profile_picture): self
+    {
+        $this->profile_picture = $profile_picture;
+
+        return $this;
     }
 
     public function getLastname(): ?string

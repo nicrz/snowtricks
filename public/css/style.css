@@ -1214,7 +1214,7 @@ p.m_8{
 }
 .to{
 	float:left;
-	width:50%;
+	width:100%;
 }
 .to input[type="text"] {
 	padding: 10px;
