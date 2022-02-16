@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}{% block title %}SnowTricks - Modification profil{% endblock %}{% block body %}{% include 'header.html.twig' %}
+<div class="main">
+	<div class="shop_top">
+		<div class="container">
+			<h1>Modification du profil</h1>
+			<div class="row">
+				<div class="col-md-12 contact">
+					{# If there are any errors on the form, display them #}{% set formErrors = registrationForm.vars.errors.form.getErrors(true) %}{% if formErrors|length %}
+					<div class="alert alert-danger">
+						<ul>
+							{% for error in formErrors %}
+							<li>{{ error.message }}</li>
+							{% endfor %}
+						</ul>
+					</div>
+					{% endif %}
+        {% for message in app.flashes('useredit-success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+                    
+                    {{ form_start(registrationForm) }}
+					<div class="to" style="width: 50%;">
+                    {% if profile_picture %} <img src="{{ asset('images/profile_pictures/'~ profile_picture ~'') }}" height="50" width="50" style="border-radius: 50%;" alt=""/>{% else %} <img src="{{ asset('images/profile_pictures/default.jpg') }}" height="50" width="50" style="border-radius: 50%;" alt=""/>{% endif %}
+                    
+						{{ form_row(registrationForm.profile_picture, {'label': 'Modifier la photo de profil :   '}) }}{{ form_row(registrationForm.lastname, {'label': 'Nom'}) }}{{ form_row(registrationForm.firstname, {'label': 'Prénom'}) }}{{ form_row(registrationForm.nickname, {'label': 'Pseudo'}) }}{{ form_row(registrationForm.email) }}{{ form_row(registrationForm.password) }}
+						<div class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Valider">
+							<br>
+						</div>
+					</div>
+					{{ form_end(registrationForm) }}
+					<div class="clear"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+{% include 'footer.html.twig' %}
+
+{% endblock %}

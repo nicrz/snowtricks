@@ -81,6 +81,8 @@ class TrickController extends AbstractController
                 $manager = $doctrine->getManager();
                 $manager->persist($newComment);
                 $manager->flush();
+
+                $this->addFlash('success', 'Commentaire soumis à la modération!');
     
                 return $this->redirectToRoute('trick_details', ['trickid' => $trickid]);
             }
@@ -213,6 +215,8 @@ class TrickController extends AbstractController
             $manager->persist($newTrick);
             $manager->flush();
 
+            $this->addFlash('newtrick-success', 'Figure ajoutée avec succès!');
+
             return $this->redirectToRoute('home');
         }
 
@@ -279,8 +283,8 @@ class TrickController extends AbstractController
         $manager->remove($trick);
         $manager->flush();
 
-        $this->addFlash("warning", "La figure a bien été supprimée");
-        return $this->redirectToRoute('trick_details', ['trickid' => $id]);
+        $this->addFlash('delete-success', 'Figure supprimée avec succès!');
+        return $this->redirectToRoute('home');
     }
 
     /**

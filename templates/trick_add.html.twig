@@ -3,14 +3,30 @@
 	<div class="shop_top">
 		<div class="container">
 
+							{# If there are any errors on the form, display them #}{% set formErrors = formView.vars.errors.form.getErrors(true) %}{% if formErrors|length %}
+					<div class="alert alert-danger">
+						<ul>
+							{% for error in formErrors %}
+							<li>{{ error.message }}</li>
+							{% endfor %}
+						</ul>
+					</div>
+					
+					{% endif %}
+
 
 			<h4 class="m_11">Nouvelle figure</h4>
 			{{ form_start(formView) }}
-            {{ form_widget(formView.main_image) }}
-            {{ form_widget(formView.name, {'attr': {'placeholder': 'Nom de la figure', 'style': 'width: 100%; height: 80px;' }}) }}
+			<strong>Image principale</strong> <br />
+            {{ form_widget(formView.main_image, {'attr': {'style': 'margin-bottom: 2rem;' }}) }}
+			<br /><strong>Nom de la figure</strong> <br />
+            {{ form_widget(formView.name, {'attr': {'placeholder': 'Nom de la figure', 'style': 'width: 100%; margin-bottom: 2rem;' }}) }}<br />
+			<strong>Description de la figure</strong> <br />
             {{ form_widget(formView.description, {'attr': {'placeholder': 'Description de la figure', 'style': 'width: 100%; height: 80px;' }}) }}
-            
-			<div class="form-submit">
+			<strong>Catégorie de la figure</strong> <br />
+			{{ form_widget(formView.category, {'attr': {'placeholder': 'Catégorie de la figure', 'style': 'width: 100%;' }}) }}   
+
+			<div class="form-submit" style="margin-top: 1rem;">
 				<input name="submit" type="submit" id="submit" value="Envoyer">
 				<br>
 			</div>

@@ -48,7 +48,7 @@ class Media
      *
      * @ORM\ManyToOne(targetEntity="Trick")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idtrick", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="idtrick", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $idtrick;

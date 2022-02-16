@@ -48,7 +48,7 @@ class Comment
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Trick")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="trick", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="trick", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $trick;
@@ -58,7 +58,7 @@ class Comment
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $user;

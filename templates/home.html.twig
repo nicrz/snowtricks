@@ -49,43 +49,48 @@
 		<div class="container">
 			<h3 class="m_3">Figures</h3>
 			<div class="close_but"><i class="close1"> </i></div>
+              		{% for message in app.flashes('newtrick-success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        		{% for message in app.flashes('delete-success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
       {% if is_granted('ROLE_ADMIN') %}<center><a href="{{ path('trick_add') }}"><input name="submit" type="button" id="submit" value="Ajouter une nouvelle figure"></a></center><br />{% endif %}
 			  <div class="row">
+
         {% for trick in tricks %}
 
-        <div class="col-md-4 trick">
+        <div class="col-md-4 trick" style="margin-bottom: 2rem;">
 				<div class="img_section magnifier2">
 				  <a class="fancybox" style="color: white;" href="{{ path('trick_details', {'trickid': trick.id}) }}" data-fancybox-group="gallery" title="Lorem ipsum dolor sit amet"><img src="{{ asset('images/tricks/'~ trick.main_image ~'') }}" class="img-responsive" width="361" height="268" style="margin-bottom: 10px;"><span> </span>
 					<div class="img_section_txt">
 						<strong>{{ trick.name }}</strong> {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('trick_edit', {'id': trick.id }) }}"><img src="{{ asset('images/edit.png') }}"/></a> <a href="{{ path('trick_delete', {'id': trick.id }) }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette figure?')"><img src="{{ asset('images/delete.png') }}"/></a>{% endif %}
 					</div>
 				</a></div>
-				</div>
+	    </div>
+        
         {% endfor %}
 			</div>
       			<div class="row justify-content-center m-3">
 			<a href="#" id="loadMoreTrick"><img src="{{ asset('images/loadmore.png') }}"></a>
-      <a href="#" id="loadLessTrick">MOINS</a>
 			</div>
 		 </div>
 	    </div>
 
 <script>
 
-    $("div.trick").slice(6, $("div.trick").length).hide();
+$(function () {
+    $("div.trick").slice(6).hide();
     $("#loadMoreTrick").on('click', function (e) {
         e.preventDefault();
-        $("div.trick:hidden").slice(0, 6).slideDown();
+        $("div.trick:hidden").slice(0, 3).slideDown();
         if ($("div.trick:hidden").length == 0) {
             $("#loadMoreTrick").hide('slow');
-            $("#loadLessTrick").show('slow');
         }
-    });
-    $("#loadLessTrick").on('click', function (e) {
-        e.preventDefault();
-        $("div.trick").slice(6, $("div.trick").length).hide();
-        $("#loadLessTrick").hide('slow');
-        $("#loadMoreTrick").show('slow');
 
     });
 });

@@ -29,13 +29,14 @@
 						<a class="carousel-control-next" href="#carousel" data-slide="next"><span class="carousel-control-next-icon"></span></a>
 					</div>
 					{% if is_granted('ROLE_ADMIN') %}
+					<h4 class="m_11">Ajouter une image</h4>
 					{{ form_start(formPictures) }}   
 					<div class="input-file-container">
 						{{ form_widget(formPictures.name, {'attr': {'class': 'input-file'}}) }}
-						<label tabindex="0" for="my-file" class="input-file-trigger">Ajouter des images </label>
+						<label tabindex="0" for="my-file" class="input-file-trigger">Ajouter une image </label>
 						<p></p>
 						{{ form_widget(formPictures.idtrick, {'attr': {'value': app.request.get('trickid')}}) }}
-						<button type="submit" class="mdc-button mdc-button--outlined shaped-button outlined-button--light mdc-ripple-upgraded" style="--mdc-ripple-fg-size:41px; --mdc-ripple-fg-scale:2.15869; --mdc-ripple-fg-translate-start:7.5625px, -2.5px; --mdc-ripple-fg-translate-end:14.3828px, -2.5px;">Envoyer</button>
+						<input name="submit" type="submit" id="submit" value="Envoyer">
 					</div>
 					{{ form_end(formPictures) }}
 					{% endif %}
@@ -51,7 +52,7 @@
 							{% for key, video in videos %}
 							<div class="carousel-item  {% if key == 0 %}active{% endif %} ">
 								{{ video.code|raw }}
-								{% if is_granted('ROLE_ADMIN') %}<br /><center><a href="{{ path('media_delete', {'trickid': app.request.get('trickid'), 'id': video.id }) }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette vidéo?')">Supprimer cette vidéo</a></center>{% endif %}
+								{% if is_granted('ROLE_ADMIN') %}<br /><center style="margin-top:0.9rem;"><a href="{{ path('media_delete', {'trickid': app.request.get('trickid'), 'id': video.id }) }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette vidéo?')">Supprimer cette vidéo</a></center>{% endif %}
 							</div>
 							{% endfor %}
 						</div>
@@ -84,6 +85,11 @@
 				</p>
 			</div>
 			<div id="comment-form">
+					{% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
 			<h4 class="m_11">Commentaires sur cette figure</h4>
 			{% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
 			{{ form_start(formView) }}
@@ -110,7 +116,7 @@
 						<a href="#"></a>
 						<h3>
 							<a href="#"></a>
-							<a href="#">{{ pending.user.lastname }} {{ pending.user.firstname }}</a>
+							<a href="#">{% if pending.user.profile_picture %} <img src="{{ asset('images/profile_pictures/'~ pending.user.profile_picture ~'') }}" height="50" width="50" style="border-radius: 50%;" alt=""/>{% else %} <img src="{{ asset('images/profile_pictures/default.jpg') }}" height="50" width="50" style="border-radius: 50%;" alt=""/>{% endif %}{{ pending.user.lastname }} {{ pending.user.firstname }}</a>
 						</h3>
 						<p>
 							{{ pending.content }} 
@@ -127,13 +133,14 @@
 			{% endif %}
 
 				{% for comment in comments %}
+
 				<div class="col-md-4 trick">
 					<img src="images/s1.jpg" class="img-responsive" alt=""/>
 					<div class="shop_desc">
 						<a href="#"></a>
 						<h3>
 							<a href="#"></a>
-							<a href="#">{{ comment.user.lastname }} {{ comment.user.firstname }}</a>
+							<a href="#">{% if comment.user.profile_picture %} <img src="{{ asset('images/profile_pictures/'~ comment.user.profile_picture ~'') }}" height="50" width="50" style="border-radius: 50%;" alt=""/>{% else %} <img src="{{ asset('images/profile_pictures/default.jpg') }}" height="50" width="50" style="border-radius: 50%;" alt=""/>{% endif %} {{ comment.user.lastname }} {{ comment.user.firstname }}</a>
 						</h3>
 						<p>
 							{{ comment.content }} 
