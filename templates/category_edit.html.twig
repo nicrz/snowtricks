@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}{% block title %}SnowTricks - Modification d'une catégorie{% endblock %}{% block body %}{% include 'header.html.twig' %}
+<div class="main">
+	<div class="shop_top">
+		<div class="container">
+
+							{# If there are any errors on the form, display them #}{% set formErrors = formView.vars.errors.form.getErrors(true) %}{% if formErrors|length %}
+					<div class="alert alert-danger">
+						<ul>
+							{% for error in formErrors %}
+							<li>{{ error.message }}</li>
+							{% endfor %}
+						</ul>
+					</div>
+					
+					{% endif %}
+
+
+			<h4 class="m_11">Modification catégorie</h4>
+			{{ form_start(formView) }}
+			<br /><strong>Nom de la catégorie</strong> <br />
+            {{ form_widget(formView.name, {'attr': {'placeholder': 'Nom de la catégorie', 'style': 'width: 100%; margin-bottom: 2rem;' }}) }}<br />
+
+			<div class="form-submit" style="margin-top: 1rem;">
+				<input name="submit" type="submit" id="submit" value="Envoyer">
+				<br>
+			</div>
+			{{ form_end(formView) }}
+			<br />
+		</div>
+	</div>
+</div>
+
+{% include 'footer.html.twig' %}
+
+{% endblock %}

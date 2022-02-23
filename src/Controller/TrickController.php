@@ -211,6 +211,8 @@ class TrickController extends AbstractController
                 // instead of its contents
                 $newTrick->setMain_image($newFilename);
             }
+
+            $newTrick->setCreated_at(new \DateTime('@'.strtotime('now')));
             $manager = $doctrine->getManager();
             $manager->persist($newTrick);
             $manager->flush();
@@ -231,6 +233,10 @@ class TrickController extends AbstractController
      */
     public function editTrick(ManagerRegistry $doctrine, Request $request, Trick $trick, SluggerInterface $slugger)
     {
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
 
         $form = $this->createForm(TrickType::class, $trick);
 
@@ -279,6 +285,10 @@ class TrickController extends AbstractController
     public function deleteTrick(ManagerRegistry $doctrine, $id, Trick $trick)
     {
 
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
+
         $manager = $doctrine->getManager();
         $manager->remove($trick);
         $manager->flush();
@@ -292,6 +302,10 @@ class TrickController extends AbstractController
      */
     public function deleteComment(ManagerRegistry $doctrine, $trickid, Comment $comment)
     {
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
 
         $manager = $doctrine->getManager();
         $manager->remove($comment);

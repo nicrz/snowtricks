@@ -30,6 +30,10 @@ class MediaController extends AbstractController
     public function deleteMedia(ManagerRegistry $doctrine, $trickid, Media $media)
     {
 
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
+
         $manager = $doctrine->getManager();
         $manager->remove($media);
         $manager->flush();

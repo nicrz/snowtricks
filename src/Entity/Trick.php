@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * Figure
  *
- * @ORM\Table(name="trick")
+ * @ORM\Table(name="trick", indexes={@ORM\Index(name="category", columns={"category"}), @ORM\Index(name="author", columns={"author"})})
  * @ORM\Entity(repositoryClass=TrickRepository::class)
  * @UniqueEntity(fields={"name"}, message="Il existe déjà une figure avec cette appelation")
  */
@@ -47,6 +47,13 @@ class Trick
     private $description;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="date", nullable=false)
+     */
+    private $created_at;
+
+    /**
      * @var \Category
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", fetch="EAGER")
@@ -55,6 +62,16 @@ class Trick
      * })
      */
     private $category;
+
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="author", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    private $author;
 
     public function getId(): ?int
     {
@@ -97,6 +114,18 @@ class Trick
         return $this;
     }
 
+    public function getCreated_at(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreated_at(?\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -105,6 +134,18 @@ class Trick
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

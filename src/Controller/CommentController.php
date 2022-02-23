@@ -30,6 +30,10 @@ class CommentController extends AbstractController
     public function commentValidation(ManagerRegistry $doctrine, $trickid, $id, Comment $comment)
     {
 
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
+
         $entityManager = $doctrine->getManager();
         $comment = $entityManager->getRepository(Comment::class)->find($id);
 
@@ -49,6 +53,10 @@ class CommentController extends AbstractController
      */
     public function deleteComment(ManagerRegistry $doctrine, $trickid, Comment $comment)
     {
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
 
         $manager = $doctrine->getManager();
         $manager->remove($comment);

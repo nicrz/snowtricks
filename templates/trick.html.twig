@@ -8,6 +8,7 @@
 			<br />
 			<center>
 				<h1>{{ trick.name }}</h1>{% if is_granted('ROLE_ADMIN') %}<a href="{{ path('trick_edit', {'id': app.request.get('trickid') }) }}"><img src="{{ asset('images/edit.png') }}"/></a> <a href="{{ path('trick_delete', {'id': app.request.get('trickid') }) }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette figure?')"><img src="{{ asset('images/delete.png') }}"/></a>{% endif %}
+			<br /> Posté par <strong>{{ trick.author.firstname }} {{ trick.author.lastname }}</strong> le {{ trick.created_at | date('d/m/Y') }} | Catégorie : {{ trick.category.name }} 
 			</center>
 			<div class="row d-none d-lg-flex load-media">
 				<div class="col-lg-6 col-md-12">
@@ -146,7 +147,7 @@
 							{{ comment.content }} 
 						</p>
 						<ul class="buttons">
-							<li class="cart"><a href="#">{{ comment.date |date('d-m-Y') }}</a></li>
+							<li class="cart"><a href="#">{{ comment.date | date('d/m/Y') }}</a></li>
 							{% if is_granted('ROLE_ADMIN') %}<li class="shop_btn"><a href="{{ path('comment_delete', {'trickid': app.request.get('trickid'), 'id': comment.id }) }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce commentaire?')">Supprimer</a></li>{% endif %}
 							<div class="clear"></div>
 						</ul>

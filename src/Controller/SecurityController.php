@@ -91,8 +91,12 @@ class SecurityController extends AbstractController
    /**
      * @Route("/user/{id}/edit", name="user_edit")
      */
-    public function editProfile(ManagerRegistry $doctrine, User $user, Request $request, UserPasswordHasherInterface $userPasswordHasher, SluggerInterface $slugger): Response
+    public function editProfile($id, ManagerRegistry $doctrine, User $user, Request $request, UserPasswordHasherInterface $userPasswordHasher, SluggerInterface $slugger): Response
     {
+
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY') || $user->getEmail() != $this->getUser()->getUserIdentifier()) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
 
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);

@@ -11,8 +11,11 @@
 						    <ul class="nav" id="nav">
 						    	<li><a href="{{ path('home') }}">Accueil</a></li>
 						    	<li><a href="#figures">Figures</a></li>
+								{% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
+								<li><a href="{{ path('categories_list') }}">Catégories</a></li>
+								{% endif %}
 								{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-								<li><a href="{{ path('user_edit', {'id': app.user.id}) }}">Modifier mon profil</a></li>
+								<li><a href="{{ path('user_edit', {'id': app.user.id}) }}">Profil</a></li>
 								<li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
 								{% else %}
 						    	<li><a href="{{ path('app_login') }}">Connexion</a></li>
