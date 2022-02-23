@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}{% block title %}SnowTricks - Gesion des catégories{% endblock %}{% block body %}{% include 'header.html.twig' %}
+<div class="main">
+	<div class="shop_top">
+		<div class="container">
+			<center>
+				<h1>Liste des catégories</h1>
+                <br /><a href="{{ path('category_add') }}"><input name="submit" type="button" id="submit" value="Ajouter une nouvelle catégorie"></a><br />
+			</center><br />
+
+        {% for message in app.flashes('newcateg-success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('deletecateg-success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('editcateg-success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+		
+            <div class="row">
+				{% for category in categories %}
+
+            
+				<div class="col-md-4 trick">
+					<img src="images/s1.jpg" class="img-responsive" alt=""/>
+					<div class="shop_desc">
+						<a href="#"></a>
+						<h3>
+							<a href="#"></a>
+							<a href="#">{{ category.name }}</a>
+						</h3>
+						<ul class="buttons">
+                            <li class="shop_btn"><a href="{{ path('category_edit', {'id': category.id}) }}"> Modifier</a></li>
+							<li class="shop_btn"><a href="{{ path('category_delete', {'id': category.id}) }}" style="margin-right: 0.5rem;" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette catégorie?')">Supprimer </a></li>
+							<div class="clear"></div>
+						</ul>
+					</div>
+					
+				</div>
+				{% endfor %}
+
+            </div>
+				
+			</div>
+			<div class="row justify-content-center m-3">
+			<a href="#" id="loadMoreTrick"><img src="{{ asset('images/loadmore.png') }}"></a>
+
+	</div>
+</div>
+
+<script>
+
+$(function () {
+    $("div.trick").slice(6, $("div.trick").length).hide();
+    $("#loadMoreTrick").on('click', function (e) {
+        e.preventDefault();
+        $("div.trick:hidden").slice(0, 3).slideDown();
+        if ($("div.trick:hidden").length == 0) {
+            $("#loadMoreTrick").hide('slow');
+            $("#loadLessTrick").show('slow');
+        }
+    });
+    $("#loadLessTrick").on('click', function (e) {
+        e.preventDefault();
+        $("div.trick").slice(3, $("div.trick").length).hide();
+        $("#loadLessTrick").hide('slow');
+        $("#loadMoreTrick").show('slow');
+
+    });
+});
+
+$(function () {
+    $("#loadMedia").on('click', function (e) {
+        e.preventDefault();
+        $("div.load-media").removeClass('d-none');
+        $("#loadMedia").addClass('d-none');
+        $("#hideMedia").removeClass('d-none');
+    });
+    $("#hideMedia").on('click', function (e) {
+        e.preventDefault();
+        $("div.load-media").addClass('d-none');
+        $("#loadMedia").removeClass('d-none');
+        $("#hideMedia").addClass('d-none');
+    });
+
+});
+
+</script>
+
+{% include 'footer.html.twig' %}
+
+{% endblock %}
