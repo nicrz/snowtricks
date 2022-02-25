@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Forms;
 
 use App\Entity\Trick;
 use App\Entity\Category;

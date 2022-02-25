@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Forms;
 
 use App\Entity\Comment;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
