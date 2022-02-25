@@ -10,10 +10,10 @@ use App\Repository\TrickRepository;
 use App\Repository\MediaRepository;
 use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
-use App\Form\CommentType;
-use App\Form\MediaType;
-use App\Form\MediaVideoType;
-use App\Form\TrickType;
+use App\Forms\CommentType;
+use App\Forms\MediaType;
+use App\Forms\MediaVideoType;
+use App\Forms\TrickType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -167,7 +167,6 @@ class TrickController extends AbstractController
             "formView" => $form->createView(),
             "formPictures" => $picturesform->createView(),
             "formVideos" => $videosform->createView(),
-            dump($trick),
         ]);
     }
 
@@ -186,6 +185,8 @@ class TrickController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
+
+            $author = $this->getUser();
 
             $image = $form->get('main_image')->getData();
 
@@ -213,6 +214,7 @@ class TrickController extends AbstractController
             }
 
             $newTrick->setCreated_at(new \DateTime('@'.strtotime('now')));
+            $newTrick->setAuthor($author);
             $manager = $doctrine->getManager();
             $manager->persist($newTrick);
             $manager->flush();

@@ -61,6 +61,11 @@ class TrickType extends AbstractType
             'choice_label' => 'name'
         ]);
 
+        $builder->add('author', HiddenType::class, [
+            // renders it as a single text box
+            'mapped' => false,
+        ]);
+
     }
 
 
