@@ -40,7 +40,7 @@ Pour implémenter ces fonctionnalités, vous devez créer les pages suivantes :
 ```
 git clone https://github.com/nicrz/snowtricks
 ```
-##### 2/ Créez une base de données dans PHPMyAdmin et importez-y le fichier snowtricks.sql
+##### 2/ Créez une base de données dans PHPMyAdmin et importez-y le fichier P6_05_bdd.sql
 
 ##### 3/ Remplacez la ligne suivante de votre fichier .env avec les informations de connexions à la base de données que vous venez de créer.
 ```
