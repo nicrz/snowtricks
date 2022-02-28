@@ -34,7 +34,7 @@ class MediaType extends AbstractType
 
             // unmapped fields can't define their validation using annotations
             // in the associated entity, so you can use the PHP constraint classes
-            'multiple' => false,
+            'multiple' => true,
 
             'error_mapping' => [
                 'upload_max_files' => 'Vous ne pouvez pas envoyer plus de 50 images à la fois',
